@@ -1,0 +1,24 @@
+# Objects and other compilation artifacts.
+*.o
+*.so
+*.aps
+*build/
+*Debug/
+*Dbg/
+*Rel/
+
+# Visual Studio.
+*.plg
+*.opt
+*.vbw
+*.ncb
+
+# eMbedded Visual Studio.
+*.vco
+*.vcb
+*.vcl
+
+# Misc.
+.DS_Store
+Thumbs.db
+

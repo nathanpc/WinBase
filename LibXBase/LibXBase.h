@@ -34,7 +34,9 @@ LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
 LIBXBASE_API BOOL xBaseClose(xBaseHandle *hndBase);
 
 /* Simple Conversion Helpers */
-LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader); 
+LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader);
+LIBXBASE_API void xBaseGetLastUpdatedStr(const DbfHeader *dbfHeader,
+										 LPTSTR szDate);
 
 #ifdef __cplusplus
 }

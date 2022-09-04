@@ -48,6 +48,10 @@ int main(int argc, char* argv[])
  */
 void PrintHeader(DbfHeader *dbfHeader)
 {
+	TCHAR szLastUpdated[11];
+
 	_tprintf(TEXT("Version: %s\r\n"), xBaseGetDBVersionName(dbfHeader));
+	xBaseGetLastUpdatedStr(dbfHeader, szLastUpdated);
+	_tprintf(TEXT("Last Updated: %s\r\n"), szLastUpdated);
 }
 

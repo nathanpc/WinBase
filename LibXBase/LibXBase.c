@@ -77,48 +77,63 @@ LIBXBASE_API BOOL xBaseClose(xBaseHandle *hndBase)
 /**
  * Gets the version string of a database.
  *
- * @param dbfHedaer Header of a database.
+ * @param dbfHeader Header of a database.
  *
  * @return String representation of the database version.
  */
 LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader)
 {
-	switch (dbfHeader->ucVersion) {
-	case 0x02:
-		return TEXT("FoxBase");
-	case 0x03:
-		return TEXT("File without DBT");
-	case 0x04:
-		return TEXT("dBASE IV");
-	case 0x05:
-		return TEXT("dBASE V");
-	case 0x07:
-		return TEXT("Visual Objects for dBASE III");
-	case 0x30:
-		return TEXT("Visual FoxPro");
-	case 0x31:
-		return TEXT("Visual FoxPro (with Auto Increment)");
-	case 0x43:
-		return TEXT("DBV Memo Variable Size");
-	case 0x7B:
-		return TEXT("dBASE IV (with Memo)");
-	case 0x83:
-		return TEXT("dBASE III+ (with Memo)");
-	case 0x87:
-		return TEXT("Visual Objects for dBASE III (with Memo)");
-	case 0x8B:
-		return TEXT("dBASE IV (with Memo)");
-	case 0x8E:
-		return TEXT("dBASE IV (with SQL)");
-	case 0xB3:
-		return TEXT("DBV and DBT Memo");
-	case 0xE5:
-		return TEXT("Clipper SIX (with SMT Memo)");
-	case 0xF5:
-		return TEXT("FoxPro (with Memo)");
-	case 0xFB:
-		return TEXT("FoxPro (Unknown)");
-	default:
-		return TEXT("Unknown");
+	switch (dbfHeader->ucVersion)
+	{
+		case 0x02:
+			return TEXT("FoxBase");
+		case 0x03:
+			return TEXT("File without DBT");
+		case 0x04:
+			return TEXT("dBASE IV");
+		case 0x05:
+			return TEXT("dBASE V");
+		case 0x07:
+			return TEXT("Visual Objects for dBASE III");
+		case 0x30:
+			return TEXT("Visual FoxPro");
+		case 0x31:
+			return TEXT("Visual FoxPro (with Auto Increment)");
+		case 0x43:
+			return TEXT("DBV Memo Variable Size");
+		case 0x7B:
+			return TEXT("dBASE IV (with Memo)");
+		case 0x83:
+			return TEXT("dBASE III+ (with Memo)");
+		case 0x87:
+			return TEXT("Visual Objects for dBASE III (with Memo)");
+		case 0x8B:
+			return TEXT("dBASE IV (with Memo)");
+		case 0x8E:
+			return TEXT("dBASE IV (with SQL)");
+		case 0xB3:
+			return TEXT("DBV and DBT Memo");
+		case 0xE5:
+			return TEXT("Clipper SIX (with SMT Memo)");
+		case 0xF5:
+			return TEXT("FoxPro (with Memo)");
+		case 0xFB:
+			return TEXT("FoxPro (Unknown)");
+		default:
+			return TEXT("Unknown");
 	}
+}
+
+/**
+ * Gets the Last Updated value as a string in ISO-8601 format.
+ *
+ * @param dbfHeader Header of a database.
+ * @param szDate    Pointer to a string that will contain the date and can hold
+ *                  11 characters including the NULL terminator.
+ */
+LIBXBASE_API void xBaseGetLastUpdatedStr(const DbfHeader *dbfHeader,
+										 LPTSTR szDate)
+{
+	_stprintf(szDate, "%04d-%02d-%02d", 1900 + dbfHeader->ucaLastUpdate[0],
+		dbfHeader->ucaLastUpdate[1], dbfHeader->ucaLastUpdate[2]);
 }

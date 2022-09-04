@@ -134,6 +134,18 @@ LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader)
 LIBXBASE_API void xBaseGetLastUpdatedStr(const DbfHeader *dbfHeader,
 										 LPTSTR szDate)
 {
-	_stprintf(szDate, "%04d-%02d-%02d", 1900 + dbfHeader->ucaLastUpdate[0],
+	_stprintf(szDate, "%04u-%02u-%02u", 1900 + dbfHeader->ucaLastUpdate[0],
 		dbfHeader->ucaLastUpdate[1], dbfHeader->ucaLastUpdate[2]);
+}
+
+/**
+ * Gets the number of records contained in a database.
+ *
+ * @param dbfHeader Header of a database.
+ *
+ * @return Amount of records in the database. 
+ */
+LIBXBASE_API UINT32 xBaseGetNumberRecords(const DbfHeader *dbfHeader)
+{
+	return dbfHeader->ulRecords;
 }

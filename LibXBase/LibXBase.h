@@ -37,6 +37,7 @@ LIBXBASE_API BOOL xBaseClose(xBaseHandle *hndBase);
 LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader);
 LIBXBASE_API void xBaseGetLastUpdatedStr(const DbfHeader *dbfHeader,
 										 LPTSTR szDate);
+LIBXBASE_API UINT32 xBaseGetNumberRecords(const DbfHeader *dbfHeader);
 
 #ifdef __cplusplus
 }

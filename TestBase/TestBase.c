@@ -53,5 +53,6 @@ void PrintHeader(DbfHeader *dbfHeader)
 	_tprintf(TEXT("Version: %s\r\n"), xBaseGetDBVersionName(dbfHeader));
 	xBaseGetLastUpdatedStr(dbfHeader, szLastUpdated);
 	_tprintf(TEXT("Last Updated: %s\r\n"), szLastUpdated);
+	_tprintf(TEXT("Number of Records: %u\r\n"), xBaseGetNumberRecords(dbfHeader));
 }
 

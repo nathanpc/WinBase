@@ -17,6 +17,29 @@ extern "C" {
 #include <stdio.h>
 
 /**
+ * Database magic code flag that denotes which kind of file we have.
+ */
+typedef enum {
+	DBF_FOXBASE         = 0x02,
+	DBF_FILEWODBT       = 0x03,
+	DBF_DBASEIV         = 0x04,
+	DBF_DBASEV          = 0x05,
+	DBF_VISOBJDBIII     = 0x07,
+	DBF_VISFOXPRO       = 0x30,
+	DBF_VISFOXPROAI     = 0x31,
+	DBF_DBVMEMOVAR      = 0x43,
+	DBF_DBASEIVMEMOSQL  = 0x7B,
+	DBF_DBASEIIIMEMO    = 0x83,
+	DBF_VISOBJDBIIIMEMO = 0x87,
+	DBF_DBASEIVMEMO     = 0x8B,
+	DBF_DBASEIVSQL      = 0x8E,
+	DBF_DBVDBTMEMO      = 0xB3,
+	DBF_CLIPPERMEMO     = 0xE5,
+	DBF_FOXPROMEMO      = 0xF5,
+	DBF_FOXPROUNKOWN    = 0xFB
+} XBASE_SIGNATURE;
+
+/**
  * Database language definitions for DbfHeader.ucLanguage.
  */
 typedef enum {

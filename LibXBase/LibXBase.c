@@ -85,39 +85,39 @@ LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader)
 {
 	switch (dbfHeader->ucVersion)
 	{
-		case 0x02:
+		case DBF_FOXBASE:
 			return TEXT("FoxBase");
-		case 0x03:
+		case DBF_FILEWODBT:
 			return TEXT("File without DBT");
-		case 0x04:
+		case DBF_DBASEIV:
 			return TEXT("dBASE IV");
-		case 0x05:
+		case DBF_DBASEV:
 			return TEXT("dBASE V");
-		case 0x07:
+		case DBF_VISOBJDBIII:
 			return TEXT("Visual Objects for dBASE III");
-		case 0x30:
+		case DBF_VISFOXPRO:
 			return TEXT("Visual FoxPro");
-		case 0x31:
+		case DBF_VISFOXPROAI:
 			return TEXT("Visual FoxPro (with Auto Increment)");
-		case 0x43:
+		case DBF_DBVMEMOVAR:
 			return TEXT("DBV Memo Variable Size");
-		case 0x7B:
+		case DBF_DBASEIVMEMOSQL:
 			return TEXT("dBASE IV (with Memo)");
-		case 0x83:
+		case DBF_DBASEIIIMEMO:
 			return TEXT("dBASE III+ (with Memo)");
-		case 0x87:
+		case DBF_VISOBJDBIIIMEMO:
 			return TEXT("Visual Objects for dBASE III (with Memo)");
-		case 0x8B:
+		case DBF_DBASEIVMEMO:
 			return TEXT("dBASE IV (with Memo)");
-		case 0x8E:
+		case DBF_DBASEIVSQL:
 			return TEXT("dBASE IV (with SQL)");
-		case 0xB3:
+		case DBF_DBVDBTMEMO:
 			return TEXT("DBV and DBT Memo");
-		case 0xE5:
+		case DBF_CLIPPERMEMO:
 			return TEXT("Clipper SIX (with SMT Memo)");
-		case 0xF5:
+		case DBF_FOXPROMEMO:
 			return TEXT("FoxPro (with Memo)");
-		case 0xFB:
+		case DBF_FOXPROUNKOWN:
 			return TEXT("FoxPro (Unknown)");
 		default:
 			return TEXT("Unknown");

@@ -54,5 +54,9 @@ void PrintHeader(DbfHeader *dbfHeader)
 	xBaseGetLastUpdatedStr(dbfHeader, szLastUpdated);
 	_tprintf(TEXT("Last Updated: %s\r\n"), szLastUpdated);
 	_tprintf(TEXT("Number of Records: %u\r\n"), xBaseGetNumberRecords(dbfHeader));
+	_tprintf(TEXT("Pending Transactions: %s\r\n"),
+		(xBaseIsTransactionPending(dbfHeader) ? TEXT("YES") : TEXT("NO")));
+	_tprintf(TEXT("Database Encrypted: %s\r\n"),
+		(xBaseIsEncrypted(dbfHeader) ? TEXT("YES") : TEXT("NO")));
 }
 

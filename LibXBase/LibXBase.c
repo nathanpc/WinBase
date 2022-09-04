@@ -149,3 +149,27 @@ LIBXBASE_API UINT32 xBaseGetNumberRecords(const DbfHeader *dbfHeader)
 {
 	return dbfHeader->ulRecords;
 }
+
+/**
+ * Checks if there is an incomplete (pending) transaction in this database.
+ *
+ * @param dbfHeader Header of a database.
+ *
+ * @return Is there any transaction pending?
+ */
+LIBXBASE_API BOOL xBaseIsTransactionPending(const DbfHeader *dbfHeader)
+{
+	return (BOOL)dbfHeader->bIncompleteTrans;
+}
+
+/**
+ * Checks if the database is encrypted.
+ *
+ * @param dbfHeader Header of a database.
+ *
+ * @return Is the database encrypted?
+ */
+LIBXBASE_API BOOL xBaseIsEncrypted(const DbfHeader *dbfHeader)
+{
+	return (BOOL)dbfHeader->bEncrypted;
+}

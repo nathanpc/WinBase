@@ -38,6 +38,8 @@ LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader);
 LIBXBASE_API void xBaseGetLastUpdatedStr(const DbfHeader *dbfHeader,
 										 LPTSTR szDate);
 LIBXBASE_API UINT32 xBaseGetNumberRecords(const DbfHeader *dbfHeader);
+LIBXBASE_API BOOL xBaseIsTransactionPending(const DbfHeader *dbfHeader);
+LIBXBASE_API BOOL xBaseIsEncrypted(const DbfHeader *dbfHeader);
 
 #ifdef __cplusplus
 }

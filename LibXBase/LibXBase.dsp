@@ -110,6 +110,10 @@ SOURCE=.\LibXBase.h
 
 SOURCE=.\StdAfx.h
 # End Source File
+# Begin Source File
+
+SOURCE=.\xbasestruct.h
+# End Source File
 # End Group
 # Begin Group "Resource Files"
 

@@ -33,12 +33,92 @@ BOOL APIENTRY DllMain(HANDLE hModule,
     return TRUE;
 }
 
-
-// This is an example of an exported variable
-LIBXBASE_API int nLibXBase = 123;
-
-// This is an example of an exported function.
-LIBXBASE_API int fnLibXBase(void)
+/**
+ * Opens an xBase database.
+ *
+ * @param hndBase   Pointer to the handle that will contain the database.
+ * @param szDbfPath Path to the xBase *.dbf file you wish to open.
+ *
+ * @return TRUE if the operation was successful.
+ */
+LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
+							LPTSTR szDbfPath)
 {
-	return 42;
+	size_t ulReadSize;
+
+	/* Open the file. */
+	hndBase->hFile = _tfopen(szDbfPath, TEXT("r+b"));
+	if (hndBase->hFile == NULL)
+		return FALSE;
+
+	/* Read the database header. */
+	ulReadSize = fread(&hndBase->dbfHeader, sizeof(DbfHeader), 1, hndBase->hFile);
+	if (ulReadSize != 1)
+		return FALSE;
+
+	return TRUE;
+}
+
+/**
+ * Closes an xBase database.
+ *
+ * @param hndBase Database handle to be closed.
+ *
+ * @return TRUE if the operation was successful.
+ */
+LIBXBASE_API BOOL xBaseClose(xBaseHandle *hndBase)
+{
+	fclose(hndBase->hFile);
+	hndBase->hFile = NULL;
+
+	return TRUE;
+}
+
+/**
+ * Gets the version string of a database.
+ *
+ * @param dbfHedaer Header of a database.
+ *
+ * @return String representation of the database version.
+ */
+LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader)
+{
+	switch (dbfHeader->ucVersion) {
+	case 0x02:
+		return TEXT("FoxBase");
+	case 0x03:
+		return TEXT("File without DBT");
+	case 0x04:
+		return TEXT("dBASE IV");
+	case 0x05:
+		return TEXT("dBASE V");
+	case 0x07:
+		return TEXT("Visual Objects for dBASE III");
+	case 0x30:
+		return TEXT("Visual FoxPro");
+	case 0x31:
+		return TEXT("Visual FoxPro (with Auto Increment)");
+	case 0x43:
+		return TEXT("DBV Memo Variable Size");
+	case 0x7B:
+		return TEXT("dBASE IV (with Memo)");
+	case 0x83:
+		return TEXT("dBASE III+ (with Memo)");
+	case 0x87:
+		return TEXT("Visual Objects for dBASE III (with Memo)");
+	case 0x8B:
+		return TEXT("dBASE IV (with Memo)");
+	case 0x8E:
+		return TEXT("dBASE IV (with SQL)");
+	case 0xB3:
+		return TEXT("DBV and DBT Memo");
+	case 0xE5:
+		return TEXT("Clipper SIX (with SMT Memo)");
+	case 0xF5:
+		return TEXT("FoxPro (with Memo)");
+	case 0xFB:
+		return TEXT("FoxPro (Unknown)");
+	default:
+		return TEXT("Unknown");
+	}
 }

@@ -25,12 +25,19 @@ extern "C" {
 #define LIBXBASE_API __declspec(dllimport)
 #endif
 
-extern LIBXBASE_API int nLibXBase;
+#include <tchar.h>
+#include "xbasestruct.h"
 
-LIBXBASE_API int fnLibXBase(void);
+/* Handle Operations */
+LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
+							LPTSTR szDbfPath);
+LIBXBASE_API BOOL xBaseClose(xBaseHandle *hndBase);
+
+/* Simple Conversion Helpers */
+LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader); 
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // _LIBXBASE_H_
+#endif /* _LIBXBASE_H_ */

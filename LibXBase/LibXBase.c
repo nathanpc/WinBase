@@ -97,8 +97,12 @@ LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
  */
 LIBXBASE_API BOOL xBaseClose(xBaseHandle *hndBase)
 {
+	/* Close file handle. */
 	fclose(hndBase->hFile);
 	hndBase->hFile = NULL;
+
+	/* Free up the field descriptor array. */
+	cvector_free(hndBase->vecFieldDescriptors);
 
 	return TRUE;
 }

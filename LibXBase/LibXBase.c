@@ -44,11 +44,72 @@ BOOL APIENTRY DllMain(HANDLE hModule,
 LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
 							LPTSTR szDbfPath)
 {
+	/* Open the file. */
+	hndBase->hFile = _tfopen(szDbfPath, TEXT("r+b"));
+	if (hndBase->hFile == NULL)
+		return FALSE;
+
+	return TRUE;
+}
+
+/**
+ * Closes an xBase database.
+ *
+ * @param hndBase Database handle to be closed.
+ *
+ * @return TRUE if the operation was successful.
+ */
+LIBXBASE_API BOOL xBaseClose(xBaseHandle *hndBase)
+{
+	int nRet;
+
+	/* Close file handle. */
+	if (hndBase->hFile)
+	{
+		nRet = fclose(hndBase->hFile);
+		if (nRet != 0)
+			return FALSE;
+	}
+
+	/* Make sure we NULL out the file handle to indicate it's closed. */
+	hndBase->hFile = NULL;
+
+	return TRUE;
+}
+
+/**
+ * Frees an xBase database handle.
+ *
+ * @param hndBase Database handle to be free'd.
+ *
+ * @return TRUE if the operation was successful.
+ */
+LIBXBASE_API BOOL xBaseFree(xBaseHandle *hndBase)
+{
+	BOOL bResult = TRUE;
+
+	/* Make sure we close the database file handle. */
+	bResult = xBaseClose(hndBase);
+
+	/* Free up the field descriptor array. */
+	cvector_free(hndBase->vecFieldDescriptors);
+
+	return bResult;
+}
+
+/**
+ * Reads the database file header.
+ *
+ * @param hndBase Database handle to be free'd.
+ *
+ * @return TRUE if the operation was successful.
+ */
+LIBXBASE_API BOOL xBaseReadHeader(xBaseHandle *hndBase)
+{
 	size_t ulReadSize;
 	UCHAR ucFlag;
 
-	/* Open the file. */
-	hndBase->hFile = _tfopen(szDbfPath, TEXT("r+b"));
+	/* Make sure the database is open. */
 	if (hndBase->hFile == NULL)
 		return FALSE;
 
@@ -84,25 +145,6 @@ LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
 			cvector_push_back(hndBase->vecFieldDescriptors, fldDesc);
 		}
 	}
-
-	return TRUE;
-}
-
-/**
- * Closes an xBase database.
- *
- * @param hndBase Database handle to be closed.
- *
- * @return TRUE if the operation was successful.
- */
-LIBXBASE_API BOOL xBaseClose(xBaseHandle *hndBase)
-{
-	/* Close file handle. */
-	fclose(hndBase->hFile);
-	hndBase->hFile = NULL;
-
-	/* Free up the field descriptor array. */
-	cvector_free(hndBase->vecFieldDescriptors);
 
 	return TRUE;
 }

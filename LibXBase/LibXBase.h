@@ -32,6 +32,8 @@ extern "C" {
 LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
 							LPTSTR szDbfPath);
 LIBXBASE_API BOOL xBaseClose(xBaseHandle *hndBase);
+LIBXBASE_API BOOL xBaseFree(xBaseHandle *hndBase);
+LIBXBASE_API BOOL xBaseReadHeader(xBaseHandle *hndBase);
 
 /* Header Getters */
 LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader);

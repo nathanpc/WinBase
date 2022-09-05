@@ -25,12 +25,27 @@ int main(int argc, char* argv[])
 {
 	xBaseHandle hndDB;
 
+	/* Simple header. */
 	_tprintf(TEXT("WinBase Test!\r\n\r\n"));
 
 	/* Open the database. */
 	if (!xBaseOpen(&hndDB, TEXT("C:\\TESTDB\\TEST.DBF")))
 	{
 		_tprintf(TEXT("An error occurred in xBaseOpen()\r\n"));
+		return 1;
+	}
+
+	/* Read the database header. */
+	if (!xBaseReadHeader(&hndDB))
+	{
+		_tprintf(TEXT("An error occurred in xBaseReadHeader()\r\n"));
+		return 1;
+	}
+
+	/* Close the database since we no longer need it. */
+	if (!xBaseClose(&hndDB))
+	{
+		_tprintf(TEXT("An error occurred in xBaseClose()\r\n"));
 		return 1;
 	}
 
@@ -50,7 +65,13 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	xBaseClose(&hndDB);
+	/* Free up resources. */
+	if (!xBaseFree(&hndDB))
+	{
+		_tprintf(TEXT("An error occurred in xBaseFree()\r\n"));
+		return 1;
+	}
+
 	system("pause");
 	return 0;
 }

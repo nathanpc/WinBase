@@ -42,6 +42,9 @@ LIBXBASE_API BOOL xBaseIsTransactionPending(const DbfHeader *dbfHeader);
 LIBXBASE_API BOOL xBaseIsEncrypted(const DbfHeader *dbfHeader);
 
 /* Field Descriptor Helpers */
+LIBXBASE_API size_t xBaseFieldDescCount(const xBaseHandle *hndBase);
+LIBXBASE_API DbfFieldDescriptor* xBaseGetFieldDescAt(const xBaseHandle *hndBase,
+													 size_t ulIndex);
 LIBXBASE_API void xBaseGetFieldDescName(const DbfFieldDescriptor *fldDesc,
 										LPTSTR szName);
 LIBXBASE_API LPCTSTR xBaseGetFieldDescTypeStr(const DbfFieldDescriptor *fldDesc);

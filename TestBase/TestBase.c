@@ -42,10 +42,10 @@ int main(int argc, char* argv[])
 	if (hndDB.vecFieldDescriptors)
 	{
 		size_t i;
-		for (i = 0; i < cvector_size(hndDB.vecFieldDescriptors); i++)
+		for (i = 0; i < xBaseFieldDescCount(&hndDB); i++)
 		{
 			_tprintf(TEXT("[%u] "), i);
-			PrintFieldDescriptor(&hndDB.vecFieldDescriptors[i]);
+			PrintFieldDescriptor(xBaseGetFieldDescAt(&hndDB, i));
 			_tprintf(TEXT("\r\n"));
 		}
 	}

@@ -204,6 +204,33 @@ LIBXBASE_API BOOL xBaseIsEncrypted(const DbfHeader *dbfHeader)
 }
 
 /**
+ * Gets the number of field descriptors in the database.
+ *
+ * @param hndBase Database handle to be inspected.
+ *
+ * @return Number of field descriptors in the database.
+ */
+
+LIBXBASE_API size_t xBaseFieldDescCount(const xBaseHandle *hndBase)
+{
+	return cvector_size(hndBase->vecFieldDescriptors);
+}
+
+/**
+ * Gets a field descriptor at a position.
+ *
+ * @param hndBase Database handle to be inspected.
+ * @param ulIndex Index to fetch the field descriptor.
+ *
+ * @return Requested field descriptor.
+ */
+LIBXBASE_API DbfFieldDescriptor* xBaseGetFieldDescAt(const xBaseHandle *hndBase,
+													 size_t ulIndex)
+{
+	return &hndBase->vecFieldDescriptors[ulIndex];
+}
+
+/**
  * Gets the field descriptor name in a properly NULL terminated string.
  *
  * @param fldDesc Field descriptor structure.

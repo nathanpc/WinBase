@@ -11,6 +11,7 @@
 
 /* Function Prototypes */
 void PrintHeader(DbfHeader *dbfHeader);
+void PrintFieldDescriptor(DbfFieldDescriptor *fldDesc);
 
 /**
  * Program's main entry point.
@@ -35,6 +36,19 @@ int main(int argc, char* argv[])
 
 	/* Print out its header. */
 	PrintHeader(&hndDB.dbfHeader);
+	_tprintf(TEXT("\r\n"));
+
+	/* Print out the field descriptors. */
+	if (hndDB.vecFieldDescriptors)
+	{
+		size_t i;
+		for (i = 0; i < cvector_size(hndDB.vecFieldDescriptors); i++)
+		{
+			_tprintf(TEXT("[%u] "), i);
+			PrintFieldDescriptor(&hndDB.vecFieldDescriptors[i]);
+			_tprintf(TEXT("\r\n"));
+		}
+	}
 
 	xBaseClose(&hndDB);
 	system("pause");
@@ -58,5 +72,24 @@ void PrintHeader(DbfHeader *dbfHeader)
 		(xBaseIsTransactionPending(dbfHeader) ? TEXT("YES") : TEXT("NO")));
 	_tprintf(TEXT("Database Encrypted: %s\r\n"),
 		(xBaseIsEncrypted(dbfHeader) ? TEXT("YES") : TEXT("NO")));
+}
+
+/**
+ * Prints the information contained in a field descriptor.
+ *
+ * @param fldDesc Field descriptor to be printed out.
+ */
+void PrintFieldDescriptor(DbfFieldDescriptor *fldDesc)
+{
+	TCHAR szName[12];
+
+	xBaseGetFieldDescName(fldDesc, szName);
+	_tprintf(TEXT("(%s) %s\r\n"), xBaseGetFieldDescTypeStr(fldDesc), szName);
+	_tprintf(TEXT("Memory Address: %u\r\n"), fldDesc->ulMemoryAddress);
+	_tprintf(TEXT("Length: %u\r\n"), fldDesc->ucLength);
+	_tprintf(TEXT("Decimal Count: %u\r\n"), fldDesc->ucDecimalCount);
+	_tprintf(TEXT("Work Area ID: %u\r\n"), fldDesc->ucWorkAreaID);
+	_tprintf(TEXT("Set Fields Flag: %u\r\n"), fldDesc->ucSetFieldsFlag);
+	_tprintf(TEXT("Indexed Field: %s\r\n"), ((fldDesc->bIndexedField) ? TEXT("YES") : TEXT("NO")));
 }
 

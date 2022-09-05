@@ -45,6 +45,7 @@ LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
 							LPTSTR szDbfPath)
 {
 	size_t ulReadSize;
+	UCHAR ucFlag;
 
 	/* Open the file. */
 	hndBase->hFile = _tfopen(szDbfPath, TEXT("r+b"));
@@ -55,6 +56,34 @@ LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
 	ulReadSize = fread(&hndBase->dbfHeader, sizeof(DbfHeader), 1, hndBase->hFile);
 	if (ulReadSize != 1)
 		return FALSE;
+
+	/* Populate the field descriptors. */
+	hndBase->vecFieldDescriptors = NULL;
+	ucFlag = 0;
+	while (ucFlag != FIELD_DESC_ARRAY_TERM)
+	{
+		/* Try to get the terminator flag. */
+		ulReadSize = fread(&ucFlag, 1, 1, hndBase->hFile);
+		if (ulReadSize != 1)
+			return FALSE;
+
+		/* Check if we actually have a field descriptor. */
+		if (ucFlag != FIELD_DESC_ARRAY_TERM)
+		{
+			DbfFieldDescriptor fldDesc;
+
+			/* Go back from the flag that we've checked. */
+			fseek(hndBase->hFile, -1, SEEK_CUR);
+
+			/* Read the field descriptor structure. */
+			ulReadSize = fread(&fldDesc, sizeof(DbfFieldDescriptor), 1, hndBase->hFile);
+			if (ulReadSize != 1)
+				return FALSE;
+
+			/* Push the field descriptor into the array. */
+			cvector_push_back(hndBase->vecFieldDescriptors, fldDesc);
+		}
+	}
 
 	return TRUE;
 }
@@ -172,4 +201,54 @@ LIBXBASE_API BOOL xBaseIsTransactionPending(const DbfHeader *dbfHeader)
 LIBXBASE_API BOOL xBaseIsEncrypted(const DbfHeader *dbfHeader)
 {
 	return (BOOL)dbfHeader->bEncrypted;
+}
+
+/**
+ * Gets the field descriptor name in a properly NULL terminated string.
+ *
+ * @param fldDesc Field descriptor structure.
+ * @param szName  String that should hold exactly 12 characters including the
+ *                NULL terminator.
+ */
+LIBXBASE_API void xBaseGetFieldDescName(const DbfFieldDescriptor *fldDesc,
+										LPTSTR szName)
+{
+	UCHAR i;
+
+	/* Preemptively NULL terminate the string. */
+	szName[11] = TEXT('\0');
+
+	/* Copy the name over ensuring we convert to TCHAR. */
+	for (i = 0; i <= 10; i++)
+	{
+		szName[i] = (TCHAR)fldDesc->sfzpName[i];
+	}
+}
+
+/**
+ * Gets the field descriptor data type in a human-readable format.
+ *
+ * @param fldDesc Field descriptor structure.
+ * 
+ * @return Human-readable string of the data type.
+ */
+LIBXBASE_API LPCTSTR xBaseGetFieldDescTypeStr(const DbfFieldDescriptor *fldDesc)
+{
+	switch (fldDesc->cType)
+	{
+		case TYPE_CHARACTER:
+			return TEXT("Character");
+		case TYPE_NUMBER:
+			return TEXT("Number");
+		case TYPE_LOGICAL:
+			return TEXT("Logical");
+		case TYPE_DATE:
+			return TEXT("Date");
+		case TYPE_MEMO:
+			return TEXT("Memo");
+		case TYPE_FLOAT:
+			return TEXT("Floating Point");
+		default:
+			return TEXT("Unknown");
+	}
 }

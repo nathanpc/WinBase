@@ -15,11 +15,18 @@ extern "C" {
 #include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <cvector.h>
+
+/**
+ * Field descriptor array terminator flag.
+ */
+#define FIELD_DESC_ARRAY_TERM 0x0D
 
 /**
  * Database magic code flag that denotes which kind of file we have.
  */
-typedef enum {
+typedef enum
+{
 	DBF_FOXBASE         = 0x02,
 	DBF_FILEWODBT       = 0x03,
 	DBF_DBASEIV         = 0x04,
@@ -42,7 +49,8 @@ typedef enum {
 /**
  * Database language definitions for DbfHeader.ucLanguage.
  */
-typedef enum {
+typedef enum
+{
 	LANG_DOS_USA   = 0x01,
 	LANG_DOS_MULTI = 0x02,
 	LANG_WIN_ANSI  = 0x03,
@@ -65,9 +73,23 @@ typedef enum {
 } XBASE_LANG;
 
 /**
+ * Data types definitions.
+ */
+typedef enum
+{
+	TYPE_CHARACTER = 'C',
+	TYPE_NUMBER    = 'N',
+	TYPE_LOGICAL   = 'L',
+	TYPE_DATE      = 'D',
+	TYPE_MEMO      = 'M',
+	TYPE_FLOAT     = 'F'
+} XBASE_DATATYPE;
+
+/**
  * Database file header section definition.
  */
-typedef struct {
+typedef struct
+{
 	UCHAR  ucVersion;
 	UCHAR  ucaLastUpdate[3];
 	UINT32 ulRecords;
@@ -83,11 +105,37 @@ typedef struct {
 } DbfHeader;
 
 /**
+ * Database field descriptor definition.
+ */
+typedef struct
+{
+	char   sfzpName[11];
+	char   cType;
+	UINT32 ulMemoryAddress;
+	UCHAR  ucLength;
+	UCHAR  ucDecimalCount;
+	UCHAR  ucaReserved0[2];
+	UCHAR  ucWorkAreaID;
+	UCHAR  ucaReserved1[2];
+	UCHAR  ucSetFieldsFlag;
+	UCHAR  ucaReserved[7];
+	UCHAR  bIndexedField;
+} DbfFieldDescriptor;
+
+/**
+ * Field descriptor array definition.
+ */
+typedef cvector_vector_type(DbfFieldDescriptor) VectorFieldDescriptors;
+
+/**
  * xBase database handle.
  */
-typedef struct {
+typedef struct
+{
 	FILE *hFile;
+	
 	DbfHeader dbfHeader;
+	VectorFieldDescriptors vecFieldDescriptors;
 } xBaseHandle;
 
 #ifdef __cplusplus

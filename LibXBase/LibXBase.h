@@ -33,13 +33,18 @@ LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
 							LPTSTR szDbfPath);
 LIBXBASE_API BOOL xBaseClose(xBaseHandle *hndBase);
 
-/* Simple Conversion Helpers */
+/* Header Getters */
 LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader);
 LIBXBASE_API void xBaseGetLastUpdatedStr(const DbfHeader *dbfHeader,
 										 LPTSTR szDate);
 LIBXBASE_API UINT32 xBaseGetNumberRecords(const DbfHeader *dbfHeader);
 LIBXBASE_API BOOL xBaseIsTransactionPending(const DbfHeader *dbfHeader);
 LIBXBASE_API BOOL xBaseIsEncrypted(const DbfHeader *dbfHeader);
+
+/* Field Descriptor Helpers */
+LIBXBASE_API void xBaseGetFieldDescName(const DbfFieldDescriptor *fldDesc,
+										LPTSTR szName);
+LIBXBASE_API LPCTSTR xBaseGetFieldDescTypeStr(const DbfFieldDescriptor *fldDesc);
 
 #ifdef __cplusplus
 }

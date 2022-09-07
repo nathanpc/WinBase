@@ -51,6 +51,14 @@ LIBXBASE_API void xBaseGetFieldDescName(const DbfFieldDescriptor *fldDesc,
 										LPTSTR szName);
 LIBXBASE_API LPCTSTR xBaseGetFieldDescTypeStr(const DbfFieldDescriptor *fldDesc);
 
+/* Record Operations */
+LIBXBASE_API BOOL xBaseGetRecordAt(const xBaseHandle *hndBase,
+								   xBaseRecord *dbfRecord,
+								   size_t ulIndex);
+LIBXBASE_API UCHAR xBaseGetRecordFieldValue(const xBaseRecordField *recField,
+											LPTSTR szBuffer);
+LIBXBASE_API BOOL xBaseCloseRecord(xBaseRecord *dbfRecord);
+
 #ifdef __cplusplus
 }
 #endif

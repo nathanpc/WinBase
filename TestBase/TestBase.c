@@ -12,6 +12,7 @@
 /* Function Prototypes */
 void PrintHeader(DbfHeader *dbfHeader);
 void PrintFieldDescriptor(DbfFieldDescriptor *fldDesc);
+void PrintRecord(const xBaseHandle *hndBase, size_t ulIndex);
 
 /**
  * Program's main entry point.
@@ -24,6 +25,7 @@ void PrintFieldDescriptor(DbfFieldDescriptor *fldDesc);
 int main(int argc, char* argv[])
 {
 	xBaseHandle hndDB;
+	size_t i;
 
 	/* Simple header. */
 	_tprintf(TEXT("WinBase Test!\r\n\r\n"));
@@ -53,16 +55,28 @@ int main(int argc, char* argv[])
 	PrintHeader(&hndDB.dbfHeader);
 	_tprintf(TEXT("\r\n"));
 
+	/* Open the database. */
+	if (!xBaseOpen(&hndDB, TEXT("C:\\TESTDB\\TEST.DBF")))
+	{
+		_tprintf(TEXT("An error occurred in xBaseOpen()222222\r\n"));
+		return 1;
+	}
+
 	/* Print out the field descriptors. */
 	if (hndDB.vecFieldDescriptors)
 	{
-		size_t i;
 		for (i = 0; i < xBaseFieldDescCount(&hndDB); i++)
 		{
 			_tprintf(TEXT("[%u] "), i);
 			PrintFieldDescriptor(xBaseGetFieldDescAt(&hndDB, i));
 			_tprintf(TEXT("\r\n"));
 		}
+	}
+
+	/* Print out the records. */
+	for (i = 0; i < xBaseGetNumberRecords(&hndDB.dbfHeader); i++)
+	{
+		PrintRecord(&hndDB, i);
 	}
 
 	/* Free up resources. */
@@ -114,3 +128,50 @@ void PrintFieldDescriptor(DbfFieldDescriptor *fldDesc)
 	_tprintf(TEXT("Indexed Field: %s\r\n"), ((fldDesc->bIndexedField) ? TEXT("YES") : TEXT("NO")));
 }
 
+/**
+ * Prints the contents of a record.
+ *
+ * @param hndBase Database handle to be used for reading the record.
+ * @param ulIndex Index of the record to be printed.
+ */
+void PrintRecord(const xBaseHandle *hndBase, size_t ulIndex)
+{
+	UCHAR i;
+	xBaseRecord dbfRecord;
+
+	/* Read the database record. */
+	if (!xBaseGetRecordAt(hndBase, &dbfRecord, ulIndex))
+	{
+		_tprintf(TEXT("An error occurred in xBaseGetRecordAt()\r\n"));
+		return;
+	}
+
+	/* Print a little header. */
+	_tprintf(TEXT("Record #%u\r\n"), ulIndex);
+
+	/* Go through the fields in the record. */
+	for (i = 0; i < xBaseFieldDescCount(hndBase); i++)
+	{
+		xBaseRecordField recField;
+		TCHAR szName[12];
+		LPTSTR szValue;
+		
+		/* Get the field title. */
+		recField = dbfRecord.vecFields[i];
+		xBaseGetFieldDescName(recField.pFieldDescriptor, szName);
+		_tprintf(TEXT("%s: "), szName);
+
+		/* Allocate the string to hold the field value and get it. */
+		szValue = (LPTSTR)malloc(xBaseGetRecordFieldValue(&recField, NULL));
+		xBaseGetRecordFieldValue(&recField, szValue);
+
+		/* Print it up! */
+		_tprintf(TEXT("\"%s\"\r\n"), szValue);
+
+		/* Clean up after ourselves. */
+		free(szValue);
+	}
+
+	/* Close the record up. */
+	xBaseCloseRecord(&dbfRecord);
+}

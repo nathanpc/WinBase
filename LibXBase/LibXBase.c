@@ -8,6 +8,9 @@
 #include "stdafx.h"
 #include "LibXBase.h"
 
+/* Private Methods */
+void xBaseFreeRecordField(void *lpRecordField);
+
 /**
  * Library's entry point.
  *
@@ -324,4 +327,143 @@ LIBXBASE_API LPCTSTR xBaseGetFieldDescTypeStr(const DbfFieldDescriptor *fldDesc)
 		default:
 			return TEXT("Unknown");
 	}
+}
+
+/**
+ * Gets an record from the database at an specific index.
+ *
+ * @param hndBase   Database handle to be inspected.
+ * @param dbfRecord Pointer to the record struture that will hold the record.
+ * @param ulIndex   Index of the record to be fetched.
+ *
+ * @return TRUE if the operation was successful.
+ */
+LIBXBASE_API BOOL xBaseGetRecordAt(const xBaseHandle *hndBase,
+								   xBaseRecord *dbfRecord,
+								   size_t ulIndex)
+{
+	UCHAR ucFldIndex;
+	size_t ulReadSize;
+
+	/* Make sure the database is open. */
+	if (hndBase->hFile == NULL)
+		return FALSE;
+
+	/* Make sure we are not going past our last record. */
+	if (ulIndex >= xBaseGetNumberRecords(&hndBase->dbfHeader))
+		return FALSE;
+
+	/* Set some context properties. */
+	dbfRecord->hndBase = hndBase;
+	dbfRecord->ulIndex = ulIndex;
+
+	/* Seek to the position of the first record. */
+	fseek(hndBase->hFile, hndBase->dbfHeader.usHeaderLength, SEEK_SET);
+
+	/* Seek to the requested record. */
+	if (ulIndex > 0)
+	{
+		fseek(hndBase->hFile, hndBase->dbfHeader.usRecordLength * ulIndex,
+			SEEK_CUR);
+	}
+
+	/* Read the deleted flag. */
+	ulReadSize = fread(&dbfRecord->ucDeletedFlag, sizeof(UCHAR), 1, hndBase->hFile);
+	if (ulReadSize != 1)
+		return FALSE;
+
+	/* Allocate the fields array for the fields data. */
+	dbfRecord->vecFields = NULL;
+	cvector_reserve(dbfRecord->vecFields, xBaseFieldDescCount(hndBase));
+	cvector_set_elem_destructor(dbfRecord->vecFields, xBaseFreeRecordField);
+
+	/* Retrieve the fields in the record. */
+	for (ucFldIndex = 0; ucFldIndex < xBaseFieldDescCount(hndBase); ucFldIndex++)
+	{
+		xBaseRecordField recField;
+
+		/* Get the field descriptor associated with this field. */
+		recField.pFieldDescriptor = xBaseGetFieldDescAt(hndBase, ucFldIndex);
+
+		/* Allocate memory for the field data and terminate it. */
+		recField.pData = (char *)malloc(sizeof(char) *
+			(recField.pFieldDescriptor->ucLength + 1));
+		recField.pData[recField.pFieldDescriptor->ucLength] = '\0';
+
+		/* Copy the data over. */
+		ulReadSize = fread(recField.pData, sizeof(char),
+			recField.pFieldDescriptor->ucLength, hndBase->hFile);
+		if (ulReadSize != recField.pFieldDescriptor->ucLength)
+		{
+			cvector_free(dbfRecord->vecFields);
+			return FALSE;
+		}
+
+		/* Push the record field into the fields array. */
+		cvector_push_back(dbfRecord->vecFields, recField);
+	}
+
+	return TRUE;
+}
+
+/**
+ * Get the trimmed string value of a record field in the database.
+ *
+ * @param recField Record field to get the value from.
+ * @param szBuffer Pointer to a string that will be populated with a trimmed
+ *                 value of the record field. This can be NULL and only the
+ *                 and you'll just get the size needed to allocate for us.
+ *
+ * @return Number of bytes required to store the szBuffer string. WARNING: This
+ *         is already the number of bytes, so should go straight to malloc, no
+ *         need to multiply by sizeof(TCHAR).
+ */
+LIBXBASE_API UCHAR xBaseGetRecordFieldValue(const xBaseRecordField *recField,
+											LPTSTR szBuffer)
+{
+	UCHAR i;
+
+	if (szBuffer)
+	{
+		/* Copy the value over ensuring we convert to TCHAR. */
+		for (i = 0; i <= recField->pFieldDescriptor->ucLength; i++)
+		{
+			szBuffer[i] = (TCHAR)recField->pData[i];
+		}
+	}
+
+	/* Calculate the number of bytes required to allocate for the buffer. */
+	return sizeof(TCHAR) * (recField->pFieldDescriptor->ucLength + 1);
+}
+
+/**
+ * Closes an database record and free up its resources.
+ *
+ * @param dbfRecord Record to be closed.
+ *
+ * @return TRUE if the operation was successful.
+ */
+LIBXBASE_API BOOL xBaseCloseRecord(xBaseRecord *dbfRecord)
+{
+	dbfRecord->hndBase = NULL;
+	dbfRecord->ulIndex = 0;
+	dbfRecord->ucDeletedFlag = 0;
+	cvector_free(dbfRecord->vecFields);
+
+	return TRUE;
+}
+
+/**
+ * Frees up a record field structure.
+ *
+ * @param lpRecordField Record field to be free'd.
+ */
+void xBaseFreeRecordField(void *lpRecordField)
+{
+	xBaseRecordField *recField = (xBaseRecordField *)lpRecordField;
+
+	recField->pFieldDescriptor = NULL;
+	if (recField->pData)
+		free(recField->pData);
+	recField->pData = NULL;
 }

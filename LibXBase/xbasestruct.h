@@ -138,6 +138,32 @@ typedef struct
 	VectorFieldDescriptors vecFieldDescriptors;
 } xBaseHandle;
 
+/**
+ * Database record field definition.
+ */
+typedef struct
+{
+	DbfFieldDescriptor *pFieldDescriptor;
+	char *pData;
+} xBaseRecordField;
+
+/**
+ * Generic vector of record data fields definition.
+ */
+typedef cvector_vector_type(xBaseRecordField) VecRecordData;
+
+/**
+ * Database record definition.
+ */
+typedef struct
+{
+	const xBaseHandle *hndBase;
+	size_t ulIndex;
+
+	UCHAR ucDeletedFlag;
+	VecRecordData vecFields;
+} xBaseRecord;
+
 #ifdef __cplusplus
 }
 #endif

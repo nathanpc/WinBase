@@ -30,7 +30,7 @@ extern "C" {
 
 /* Handle Operations */
 LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
-							LPTSTR szDbfPath);
+							LPCTSTR szDbfPath);
 LIBXBASE_API BOOL xBaseClose(xBaseHandle *hndBase);
 LIBXBASE_API BOOL xBaseFree(xBaseHandle *hndBase);
 LIBXBASE_API BOOL xBaseReadHeader(xBaseHandle *hndBase);

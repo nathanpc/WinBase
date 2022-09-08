@@ -45,7 +45,7 @@ BOOL APIENTRY DllMain(HANDLE hModule,
  * @return TRUE if the operation was successful.
  */
 LIBXBASE_API BOOL xBaseOpen(xBaseHandle *hndBase,
-							LPTSTR szDbfPath)
+							LPCTSTR szDbfPath)
 {
 	/* Open the file. */
 	hndBase->hFile = _tfopen(szDbfPath, TEXT("r+b"));

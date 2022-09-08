@@ -1,6 +1,5 @@
-//Microsoft Visual C++ generated resource script.
+//Microsoft Developer Studio generated resource script.
 //
-
 #include "resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
@@ -11,13 +10,17 @@
 #define APSTUDIO_HIDDEN_SYMBOLS
 #include "windows.h"
 #undef APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 #ifdef _WIN32
-LANGUAGE 9, 1
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
 
@@ -28,8 +31,7 @@ LANGUAGE 9, 1
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-
-IDI_WINBASE       ICON    DISCARDABLE     "WinBase.ICO"
+IDI_WINBASE             ICON    DISCARDABLE     "WinBase.ICO"
 IDI_SMALL               ICON    DISCARDABLE     "SMALL.ICO"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -37,15 +39,15 @@ IDI_SMALL               ICON    DISCARDABLE     "SMALL.ICO"
 // Menu
 //
 
-IDC_WINBASE MENU DISCARDABLE
+IDC_WINBASE MENU DISCARDABLE 
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "E&xit",                IDM_EXIT
+        MENUITEM "E&xit",                       IDM_EXIT
     END
     POPUP "&Help"
     BEGIN
-        MENUITEM "&About ...",           IDM_ABOUT
+        MENUITEM "&About ...",                  IDM_ABOUT
     END
 END
 
@@ -55,7 +57,7 @@ END
 // Accelerator
 //
 
-IDC_WINBASE ACCELERATORS MOVEABLE PURE
+IDC_WINBASE ACCELERATORS MOVEABLE PURE 
 BEGIN
     "?",            IDM_ABOUT,              ASCII,  ALT
     "/",            IDM_ABOUT,              ASCII,  ALT
@@ -85,7 +87,6 @@ END
 // TEXTINCLUDE
 //
 
-
 2 TEXTINCLUDE DISCARDABLE 
 BEGIN
     "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
@@ -104,8 +105,6 @@ END
 #endif    // APSTUDIO_INVOKED
 
 
-
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // String Table
@@ -113,12 +112,70 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-   IDC_WINBASE   "WINBASE"
-   IDS_APP_TITLE       "WinBase"
-   IDS_HELLO           "Hello World!"
+    IDS_APP_TITLE           "WinBase"
+    IDS_HELLO               "Hello World!"
+    IDC_WINBASE             "WINBASE"
 END
 
-#endif
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.K.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TABLEVIEW DIALOG DISCARDABLE  0, 0, 152, 97
+STYLE WS_CHILD
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_LIST1,"SysListView32",LVS_REPORT | WS_BORDER | 
+                    WS_TABSTOP,0,0,140,85
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_TABLEVIEW, DIALOG
+    BEGIN
+        RIGHTMARGIN, 148
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 90
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // English (U.K.) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

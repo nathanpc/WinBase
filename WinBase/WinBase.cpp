@@ -9,6 +9,7 @@
 #include "resource.h"
 #include "WinBase.h"
 #include "MsgBoxes.h"
+#include "DataGridView.h"
 
 #define MAX_LOADSTRING 100
 
@@ -17,6 +18,7 @@ HINSTANCE hInst;
 HWND hwndMain;
 TCHAR szWindowClass[MAX_LOADSTRING];
 TCHAR szAppTitle[MAX_LOADSTRING];
+DataGridView ctrlGridView;
 
 /**
  * Application's main entry point.
@@ -78,8 +80,6 @@ int APIENTRY WinMain(HINSTANCE hInstance,
 	return TerminateInstance(hInstance, msg.wParam);
 }
 
-
-
 /**
  * Initializes the application and registers the application class.
  *
@@ -100,7 +100,7 @@ ATOM RegisterApplication(HINSTANCE hInstance)
 	wcex.hInstance		= hInstance;
 	wcex.hIcon			= LoadIcon(hInstance, (LPCTSTR)IDI_WINBASE);
 	wcex.hCursor		= LoadCursor(NULL, IDC_ARROW);
-	wcex.hbrBackground	= (HBRUSH)(COLOR_WINDOW + 1);
+	wcex.hbrBackground	= GetSysColorBrush(COLOR_WINDOW);
 	wcex.lpszMenuName	= (LPCSTR)IDC_WINBASE;
 	wcex.lpszClassName	= szWindowClass;
 	wcex.hIconSm		= LoadIcon(wcex.hInstance, (LPCTSTR)IDI_SMALL);
@@ -139,7 +139,8 @@ HWND InitializeInstance(HINSTANCE hInstance,
 						NULL);					// Pointer to create parameters.
 
 	// Check if the window creation worked.
-	if (!IsWindow(hWnd)) {
+	if (!IsWindow(hWnd))
+	{
 		MessageBox(NULL, TEXT("Window Creation Failed!"), TEXT("Error"),
             MB_ICONEXCLAMATION | MB_OK);
         return 0;
@@ -232,6 +233,27 @@ LRESULT WndMainCreate(HWND hWnd,
     icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
     icex.dwICC  = ICC_WIN95_CLASSES;
     InitCommonControlsEx(&icex);
+
+	// Create and setup the DataGridView control.
+	ctrlGridView = DataGridView(&hInst, &hWnd);
+	ctrlGridView.AddColumn(TEXT("SOMETHING"), 80);
+	ctrlGridView.AddColumn(TEXT("ANOTHER"), 200);
+	ctrlGridView.AddColumn(TEXT("HELLO"), 100);
+	ctrlGridView.AddColumn(TEXT("WHATEVER"), 150);
+
+	// Rows.
+	std::vector<LPTSTR> row1;
+	row1.push_back(TEXT("001"));
+	row1.push_back(TEXT("Another this thing"));
+	row1.push_back(TEXT("Even more stuff"));
+	row1.push_back(TEXT("1234-567"));
+	ctrlGridView.AddItem(row1);
+	std::vector<LPTSTR> row2;
+	row2.push_back(TEXT("002"));
+	row2.push_back(TEXT("Another this thing 2"));
+	row2.push_back(TEXT("Even more stuff 2"));
+	row2.push_back(TEXT("6789-012"));
+	ctrlGridView.AddItem(row2);
 
 	return 0;
 }

@@ -8,6 +8,8 @@
 #include "stdafx.h"
 #include "resource.h"
 #include "WinBase.h"
+#include <LibXBase.h>
+
 #include "MsgBoxes.h"
 #include "DataGridView.h"
 
@@ -19,6 +21,7 @@ HWND hwndMain;
 TCHAR szWindowClass[MAX_LOADSTRING];
 TCHAR szAppTitle[MAX_LOADSTRING];
 DataGridView ctrlGridView;
+xBaseHandle hndBase;
 
 /**
  * Application's main entry point.
@@ -236,24 +239,10 @@ LRESULT WndMainCreate(HWND hWnd,
 
 	// Create and setup the DataGridView control.
 	ctrlGridView = DataGridView(&hInst, &hWnd);
-	ctrlGridView.AddColumn(TEXT("SOMETHING"), 80);
-	ctrlGridView.AddColumn(TEXT("ANOTHER"), 200);
-	ctrlGridView.AddColumn(TEXT("HELLO"), 100);
-	ctrlGridView.AddColumn(TEXT("WHATEVER"), 150);
 
-	// Rows.
-	std::vector<LPTSTR> row1;
-	row1.push_back(TEXT("001"));
-	row1.push_back(TEXT("Another this thing"));
-	row1.push_back(TEXT("Even more stuff"));
-	row1.push_back(TEXT("1234-567"));
-	ctrlGridView.AddItem(row1);
-	std::vector<LPTSTR> row2;
-	row2.push_back(TEXT("002"));
-	row2.push_back(TEXT("Another this thing 2"));
-	row2.push_back(TEXT("Even more stuff 2"));
-	row2.push_back(TEXT("6789-012"));
-	ctrlGridView.AddItem(row2);
+	// Open the database and populate the list view control.
+	if (!OpenDatabase(TEXT("C:\\TESTDB\\TEST.DBF")))
+		return 1;
 
 	return 0;
 }
@@ -325,6 +314,9 @@ LRESULT WndMainClose(HWND hWnd,
 	// Send window destruction message.
 	DestroyWindow(hWnd);
 
+	// Free up the database stuff.
+	CloseDatabase();
+
 	return DefWindowProc(hWnd, wMsg, wParam, lParam);
 }
 
@@ -377,4 +369,101 @@ LRESULT CALLBACK AboutDlgProc(HWND hDlg,
 	}
 
     return FALSE;
+}
+
+/**
+ * Opens a database file for display.
+ *
+ * @param szPath Path to the DBF database file.
+ *
+ * @return TRUE if the operation was successful.
+ */
+BOOL OpenDatabase(LPCTSTR szPath)
+{
+	// Open the database.
+	if (!xBaseOpen(&hndBase, szPath))
+	{
+		MsgBoxError(NULL, TEXT("Error Opening Database"),
+			TEXT("An error occurred while trying to open the database."));
+		return FALSE;
+	}
+
+	// Read the database header.
+	if (!xBaseReadHeader(&hndBase))
+	{
+		MsgBoxError(NULL, TEXT("Error Reading Database Header"),
+			TEXT("An error occurred while trying to read the database header."));
+		return FALSE;
+	}
+
+	// Add columns to the list view.
+	for (int c = 0; c < xBaseFieldDescCount(&hndBase); c++)
+	{
+		TCHAR szName[12];
+
+		xBaseGetFieldDescName(xBaseGetFieldDescAt(&hndBase, c), szName);
+		ctrlGridView.AddColumn(szName, 100);
+	}
+
+	// Add rows to the list view.
+	for (size_t i = 0; i < xBaseGetNumberRecords(&hndBase.dbfHeader); i++)
+	{
+		xBaseRecord dbfRecord;
+		std::vector<LPTSTR> vecRow;
+
+		// Read the database record.
+		if (!xBaseGetRecordAt(&hndBase, &dbfRecord, i))
+		{
+			MsgBoxError(NULL, TEXT("Error Reading Database Record"),
+				TEXT("An error occurred while trying to read database record."));
+			return FALSE;
+		}
+
+		// Go through the fields in the record.
+		for (int j = 0; j < xBaseFieldDescCount(&hndBase); j++)
+		{
+			xBaseRecordField recField;
+			LPTSTR szValue;
+
+			// Allocate the string to hold the field value and get it.
+			recField = dbfRecord.vecFields[j];
+			szValue = (LPTSTR)malloc(xBaseGetRecordFieldValue(&recField, NULL));
+			xBaseGetRecordFieldValue(&recField, szValue);
+
+			// Append the field to the row vector.
+			vecRow.push_back(szValue);
+		}
+
+		// Append the row to the list view.
+		ctrlGridView.AddItem(vecRow);
+
+		// Clean up after ourselves.
+		for (int k = 0; k < xBaseFieldDescCount(&hndBase); k++)
+		{
+			free(vecRow[k]);
+		}
+		vecRow.clear();
+
+		// Close the record up.
+		xBaseCloseRecord(&dbfRecord);
+	}
+
+	return TRUE;
+}
+
+/**
+ * Closes the database file and cleans things up.
+ *
+ * @return TRUE if the operation was successful.
+ */
+BOOL CloseDatabase(void)
+{
+	if (!xBaseFree(&hndBase))
+	{
+		MsgBoxError(NULL, TEXT("Error Closing Database"),
+			TEXT("An error occurred while trying to close the database."));
+		return FALSE;
+	}
+
+	return TRUE;
 }

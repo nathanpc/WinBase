@@ -54,4 +54,8 @@ LRESULT WndMainDestroy(HWND hWnd,
 					   WPARAM wParam,
 					   LPARAM lParam);
 
+// Database operations.
+BOOL OpenDatabase(LPCTSTR szPath);
+BOOL CloseDatabase(void);
+
 #endif // _WINBASE_H

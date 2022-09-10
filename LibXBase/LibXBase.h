@@ -12,6 +12,7 @@
 extern "C" {
 #endif
 
+#ifdef LIBXBASE_DLL
 /* The following ifdef block is the standard way of creating macros which make
    exporting from a DLL simpler. All files within this DLL are compiled with
    the LIBXBASE_EXPORTS symbol defined on the command line. this symbol should
@@ -24,6 +25,9 @@ extern "C" {
 #else
 #define LIBXBASE_API __declspec(dllimport)
 #endif
+#else
+#define LIBXBASE_API
+#endif /* LIBXBASE_DLL */
 
 #include <tchar.h>
 #include "xbasestruct.h"

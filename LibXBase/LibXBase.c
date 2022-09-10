@@ -11,6 +11,7 @@
 /* Private Methods */
 void xBaseFreeRecordField(void *lpRecordField);
 
+#ifdef LIBXBASE_DLL
 /**
  * Library's entry point.
  *
@@ -35,6 +36,7 @@ BOOL APIENTRY DllMain(HANDLE hModule,
 
     return TRUE;
 }
+#endif /* LIBXBASE_DLL */
 
 /**
  * Opens an xBase database.

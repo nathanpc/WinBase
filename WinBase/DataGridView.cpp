@@ -65,6 +65,22 @@ BOOL DataGridView::InitializeControl()
 	SendMessage(this->hWnd, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
 		LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 
+	// Set a Monospace font.
+	LOGFONT lf;
+	GetObject(GetStockObject(DEVICE_DEFAULT_FONT), sizeof(LOGFONT), &lf);
+	lf.lfWidth += 1;
+	lf.lfWeight = FW_REGULAR;
+	lf.lfItalic = FALSE;
+	lf.lfUnderline = FALSE;
+	lf.lfStrikeOut = FALSE;
+	lf.lfCharSet = ANSI_CHARSET;
+	lf.lfPitchAndFamily = FIXED_PITCH | FF_MODERN;
+	_tcscpy(lf.lfFaceName, TEXT("Courier New"));
+	HFONT hFont = CreateFontIndirect(&lf);
+	SendMessage(this->hWnd, WM_SETFONT, (WPARAM)hFont, (LPARAM)TRUE);
+	//DeleteObject(hFont);
+	// TODO: Move hFont to root of class and put Delete in destructor.
+
 	// Check if the window creation was successful.
 	if (!this->hWnd)
 		return FALSE;

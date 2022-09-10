@@ -1,0 +1,20 @@
+// XBase.idl : IDL source for XBase.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (XBase.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	uuid(8BA6F373-FBDD-470E-A225-5D6633D470CB),
+	version(1.0),
+	helpstring("XBase 1.0 Type Library")
+]
+library XBASELib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+};

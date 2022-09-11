@@ -214,7 +214,7 @@ LIBXBASE_API LPCTSTR xBaseGetDBVersionName(const DbfHeader *dbfHeader)
 LIBXBASE_API void xBaseGetLastUpdatedStr(const DbfHeader *dbfHeader,
 										 LPTSTR szDate)
 {
-	_stprintf(szDate, "%04u-%02u-%02u", 1900 + dbfHeader->ucaLastUpdate[0],
+	_stprintf(szDate, TEXT("%04u-%02u-%02u"), 1900 + dbfHeader->ucaLastUpdate[0],
 		dbfHeader->ucaLastUpdate[1], dbfHeader->ucaLastUpdate[2]);
 }
 

@@ -5,9 +5,9 @@
 
 
 /* File created by MIDL compiler version 5.01.0164 */
-/* at Sun Sep 11 00:24:30 2022
+/* at Sun Sep 11 13:09:49 2022
  */
-/* Compiler settings for C:\Documents and Settings\nathanpc\My Documents\Development\WinBase\COMServer\XBase.idl:
+/* Compiler settings for C:\DOCUMENTS AND SETTINGS\NATHANPC\MY DOCUMENTS\DEVELOPMENT\WinBase\COMServer\XBase.idl:
     Oicf (OptLev=i2), W1, Zp8, env=Win32, ms_ext, c_ext
     error checks: allocation ref bounds_check enum stub_data 
 */
@@ -35,7 +35,13 @@ typedef struct _IID
 typedef IID CLSID;
 #endif // CLSID_DEFINED
 
+const IID IID_IConnection = {0xFE5E78F1,0x88CE,0x4E02,{0x89,0xED,0xE1,0x39,0x39,0xB7,0xCB,0x42}};
+
+
 const IID LIBID_XBASELib = {0x8BA6F373,0xFBDD,0x470E,{0xA2,0x25,0x5D,0x66,0x33,0xD4,0x70,0xCB}};
+
+
+const CLSID CLSID_Connection = {0x5489A3D0,0xA55E,0x4DC3,{0xAE,0x51,0x87,0xF5,0xA1,0x05,0x28,0xE7}};
 
 
 #ifdef __cplusplus

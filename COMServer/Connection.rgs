@@ -1,0 +1,26 @@
+HKCR
+{
+	XBase.Connection.1 = s 'Connection Class'
+	{
+		CLSID = s '{5489A3D0-A55E-4DC3-AE51-87F5A10528E7}'
+	}
+	XBase.Connection = s 'Connection Class'
+	{
+		CLSID = s '{5489A3D0-A55E-4DC3-AE51-87F5A10528E7}'
+		CurVer = s 'XBase.Connection.1'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove {5489A3D0-A55E-4DC3-AE51-87F5A10528E7} = s 'Connection Class'
+		{
+			ProgID = s 'XBase.Connection.1'
+			VersionIndependentProgID = s 'XBase.Connection'
+			ForceRemove 'Programmable'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			'TypeLib' = s '{8BA6F373-FBDD-470E-A225-5D6633D470CB}'
+		}
+	}
+}

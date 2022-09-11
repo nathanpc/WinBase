@@ -4,7 +4,7 @@
 *.aps
 *.tlb
 *build/
-*Debug/
+*Debug*/
 *Dbg/
 *Rel/
 

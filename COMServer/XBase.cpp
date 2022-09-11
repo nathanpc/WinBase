@@ -11,11 +11,13 @@
 #include "XBase.h"
 
 #include "XBase_i.c"
+#include "Connection.h"
 
 
 CComModule _Module;
 
 BEGIN_OBJECT_MAP(ObjectMap)
+OBJECT_ENTRY(CLSID_Connection, CConnection)
 END_OBJECT_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

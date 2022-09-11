@@ -1,0 +1,48 @@
+// XBase.idl : IDL source for XBase.dll
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (XBase.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+	[
+		object,
+		uuid(D7CA4B59-6D55-4AFC-9438-C9B060C432D0),
+		dual,
+		helpstring("IConnection Interface"),
+		pointer_default(unique)
+	]
+	interface IConnection : IDispatch
+	{
+		[id(1), helpstring("method Open")] HRESULT Open([in] BSTR dbfPath);
+		[id(2), helpstring("method Close")] HRESULT Close();
+		[id(3), helpstring("method Free")] HRESULT Free();
+		[propget, id(4), helpstring("property Encrypted")] HRESULT Encrypted([out, retval] BOOL *pVal);
+		[propget, id(5), helpstring("property PendingTransaction")] HRESULT PendingTransaction([out, retval] BOOL *pVal);
+		[propput, id(5), helpstring("property PendingTransaction")] HRESULT PendingTransaction([in] BOOL newVal);
+		[propget, id(6), helpstring("property Version")] HRESULT Version([out, retval] short *pVal);
+		[propput, id(6), helpstring("property Version")] HRESULT Version([in] short newVal);
+		[propget, id(7), helpstring("property VersionString")] HRESULT VersionString([out, retval] BSTR *pVal);
+		[propget, id(8), helpstring("property RecordCount")] HRESULT RecordCount([out, retval] short *pVal);
+	};
+
+[
+	uuid(F0A91656-0B38-42B4-92C5-42872C95B76C),
+	version(1.0),
+	helpstring("XBase 1.0 Type Library")
+]
+library XBASELib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+	[
+		uuid(5489A3D0-A55E-4DC3-AE51-87F5A10528E7),
+		helpstring("Connection Class")
+	]
+	coclass Connection
+	{
+		[default] interface IConnection;
+	};
+};

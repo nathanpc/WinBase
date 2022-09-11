@@ -69,3 +69,52 @@ STDMETHODIMP CConnection::Free()
 
 	return S_OK;
 }
+
+STDMETHODIMP CConnection::get_Version(short *pVal)
+{
+	*pVal = (short)this->hndBase.dbfHeader.ucVersion;
+
+	return S_OK;
+}
+
+STDMETHODIMP CConnection::put_Version(short newVal)
+{
+	this->hndBase.dbfHeader.ucVersion = (UCHAR)newVal;
+
+	return S_OK;
+}
+
+STDMETHODIMP CConnection::get_VersionString(BSTR *pVal)
+{
+	*pVal = SysAllocString(xBaseGetDBVersionName(&this->hndBase.dbfHeader));
+
+	return S_OK;
+}
+
+STDMETHODIMP CConnection::get_RecordCount(short *pVal)
+{
+	*pVal = (short)xBaseGetNumberRecords(&this->hndBase.dbfHeader);
+
+	return S_OK;
+}
+
+STDMETHODIMP CConnection::get_PendingTransaction(BOOL *pVal)
+{
+	*pVal = (BOOL)this->hndBase.dbfHeader.bIncompleteTrans;
+
+	return S_OK;
+}
+
+STDMETHODIMP CConnection::put_PendingTransaction(BOOL newVal)
+{
+	this->hndBase.dbfHeader.bIncompleteTrans = newVal;
+
+	return S_OK;
+}
+
+STDMETHODIMP CConnection::get_Encrypted(BOOL *pVal)
+{
+	*pVal = (BOOL)this->hndBase.dbfHeader.bEncrypted;
+
+	return S_OK;
+}

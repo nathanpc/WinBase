@@ -18,6 +18,13 @@ import "ocidl.idl";
 		[id(1), helpstring("method Open")] HRESULT Open([in] BSTR dbfPath);
 		[id(2), helpstring("method Close")] HRESULT Close();
 		[id(3), helpstring("method Free")] HRESULT Free();
+		[propget, id(4), helpstring("property Version")] HRESULT Version([out, retval] short *pVal);
+		[propput, id(4), helpstring("property Version")] HRESULT Version([in] short newVal);
+		[propget, id(5), helpstring("property VersionString")] HRESULT VersionString([out, retval] BSTR *pVal);
+		[propget, id(6), helpstring("property RecordCount")] HRESULT RecordCount([out, retval] short *pVal);
+		[propget, id(7), helpstring("property PendingTransaction")] HRESULT PendingTransaction([out, retval] BOOL *pVal);
+		[propput, id(7), helpstring("property PendingTransaction")] HRESULT PendingTransaction([in] BOOL newVal);
+		[propget, id(8), helpstring("property Encrypted")] HRESULT Encrypted([out, retval] BOOL *pVal);
 	};
 
 [

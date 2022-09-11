@@ -5,7 +5,7 @@
 
 
 /* File created by MIDL compiler version 5.01.0164 */
-/* at Sun Sep 11 13:09:49 2022
+/* at Sun Sep 11 14:29:54 2022
  */
 /* Compiler settings for C:\DOCUMENTS AND SETTINGS\NATHANPC\MY DOCUMENTS\DEVELOPMENT\WinBase\COMServer\XBase.idl:
     Oicf (OptLev=i2), W1, Zp8, env=Win32, ms_ext, c_ext

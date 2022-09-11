@@ -36,6 +36,13 @@ void FinalRelease();
 
 // IConnection
 public:
+	STDMETHOD(get_Encrypted)(/*[out, retval]*/ BOOL *pVal);
+	STDMETHOD(get_PendingTransaction)(/*[out, retval]*/ BOOL *pVal);
+	STDMETHOD(put_PendingTransaction)(/*[in]*/ BOOL newVal);
+	STDMETHOD(get_RecordCount)(/*[out, retval]*/ short *pVal);
+	STDMETHOD(get_VersionString)(/*[out, retval]*/ BSTR *pVal);
+	STDMETHOD(get_Version)(/*[out, retval]*/ short *pVal);
+	STDMETHOD(put_Version)(/*[in]*/ short newVal);
 	STDMETHOD(Free)();
 	STDMETHOD(Close)();
 	STDMETHOD(Open)(/*[in]*/ BSTR dbfPath);

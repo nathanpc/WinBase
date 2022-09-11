@@ -2,7 +2,7 @@
 
 
 /* File created by MIDL compiler version 5.01.0164 */
-/* at Sun Sep 11 13:09:49 2022
+/* at Sun Sep 11 14:29:54 2022
  */
 /* Compiler settings for C:\DOCUMENTS AND SETTINGS\NATHANPC\MY DOCUMENTS\DEVELOPMENT\WinBase\COMServer\XBase.idl:
     Oicf (OptLev=i2), W1, Zp8, env=Win32, ms_ext, c_ext
@@ -82,6 +82,29 @@ EXTERN_C const IID IID_IConnection;
         
         virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE Close( void) = 0;
         
+        virtual /* [helpstring][id] */ HRESULT STDMETHODCALLTYPE Free( void) = 0;
+        
+        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Version( 
+            /* [retval][out] */ short __RPC_FAR *pVal) = 0;
+        
+        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_Version( 
+            /* [in] */ short newVal) = 0;
+        
+        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_VersionString( 
+            /* [retval][out] */ BSTR __RPC_FAR *pVal) = 0;
+        
+        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_RecordCount( 
+            /* [retval][out] */ short __RPC_FAR *pVal) = 0;
+        
+        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_PendingTransaction( 
+            /* [retval][out] */ BOOL __RPC_FAR *pVal) = 0;
+        
+        virtual /* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE put_PendingTransaction( 
+            /* [in] */ BOOL newVal) = 0;
+        
+        virtual /* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE get_Encrypted( 
+            /* [retval][out] */ BOOL __RPC_FAR *pVal) = 0;
+        
     };
     
 #else 	/* C style interface */
@@ -137,6 +160,37 @@ EXTERN_C const IID IID_IConnection;
         /* [helpstring][id] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *Close )( 
             IConnection __RPC_FAR * This);
         
+        /* [helpstring][id] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *Free )( 
+            IConnection __RPC_FAR * This);
+        
+        /* [helpstring][id][propget] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *get_Version )( 
+            IConnection __RPC_FAR * This,
+            /* [retval][out] */ short __RPC_FAR *pVal);
+        
+        /* [helpstring][id][propput] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *put_Version )( 
+            IConnection __RPC_FAR * This,
+            /* [in] */ short newVal);
+        
+        /* [helpstring][id][propget] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *get_VersionString )( 
+            IConnection __RPC_FAR * This,
+            /* [retval][out] */ BSTR __RPC_FAR *pVal);
+        
+        /* [helpstring][id][propget] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *get_RecordCount )( 
+            IConnection __RPC_FAR * This,
+            /* [retval][out] */ short __RPC_FAR *pVal);
+        
+        /* [helpstring][id][propget] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *get_PendingTransaction )( 
+            IConnection __RPC_FAR * This,
+            /* [retval][out] */ BOOL __RPC_FAR *pVal);
+        
+        /* [helpstring][id][propput] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *put_PendingTransaction )( 
+            IConnection __RPC_FAR * This,
+            /* [in] */ BOOL newVal);
+        
+        /* [helpstring][id][propget] */ HRESULT ( STDMETHODCALLTYPE __RPC_FAR *get_Encrypted )( 
+            IConnection __RPC_FAR * This,
+            /* [retval][out] */ BOOL __RPC_FAR *pVal);
+        
         END_INTERFACE
     } IConnectionVtbl;
 
@@ -179,6 +233,30 @@ EXTERN_C const IID IID_IConnection;
 #define IConnection_Close(This)	\
     (This)->lpVtbl -> Close(This)
 
+#define IConnection_Free(This)	\
+    (This)->lpVtbl -> Free(This)
+
+#define IConnection_get_Version(This,pVal)	\
+    (This)->lpVtbl -> get_Version(This,pVal)
+
+#define IConnection_put_Version(This,newVal)	\
+    (This)->lpVtbl -> put_Version(This,newVal)
+
+#define IConnection_get_VersionString(This,pVal)	\
+    (This)->lpVtbl -> get_VersionString(This,pVal)
+
+#define IConnection_get_RecordCount(This,pVal)	\
+    (This)->lpVtbl -> get_RecordCount(This,pVal)
+
+#define IConnection_get_PendingTransaction(This,pVal)	\
+    (This)->lpVtbl -> get_PendingTransaction(This,pVal)
+
+#define IConnection_put_PendingTransaction(This,newVal)	\
+    (This)->lpVtbl -> put_PendingTransaction(This,newVal)
+
+#define IConnection_get_Encrypted(This,pVal)	\
+    (This)->lpVtbl -> get_Encrypted(This,pVal)
+
 #endif /* COBJMACROS */
 
 
@@ -203,6 +281,101 @@ void __RPC_STUB IConnection_Open_Stub(
 
 
 void __RPC_STUB IConnection_Close_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
+
+
+/* [helpstring][id] */ HRESULT STDMETHODCALLTYPE IConnection_Free_Proxy( 
+    IConnection __RPC_FAR * This);
+
+
+void __RPC_STUB IConnection_Free_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
+
+
+/* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IConnection_get_Version_Proxy( 
+    IConnection __RPC_FAR * This,
+    /* [retval][out] */ short __RPC_FAR *pVal);
+
+
+void __RPC_STUB IConnection_get_Version_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
+
+
+/* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE IConnection_put_Version_Proxy( 
+    IConnection __RPC_FAR * This,
+    /* [in] */ short newVal);
+
+
+void __RPC_STUB IConnection_put_Version_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
+
+
+/* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IConnection_get_VersionString_Proxy( 
+    IConnection __RPC_FAR * This,
+    /* [retval][out] */ BSTR __RPC_FAR *pVal);
+
+
+void __RPC_STUB IConnection_get_VersionString_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
+
+
+/* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IConnection_get_RecordCount_Proxy( 
+    IConnection __RPC_FAR * This,
+    /* [retval][out] */ short __RPC_FAR *pVal);
+
+
+void __RPC_STUB IConnection_get_RecordCount_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
+
+
+/* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IConnection_get_PendingTransaction_Proxy( 
+    IConnection __RPC_FAR * This,
+    /* [retval][out] */ BOOL __RPC_FAR *pVal);
+
+
+void __RPC_STUB IConnection_get_PendingTransaction_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
+
+
+/* [helpstring][id][propput] */ HRESULT STDMETHODCALLTYPE IConnection_put_PendingTransaction_Proxy( 
+    IConnection __RPC_FAR * This,
+    /* [in] */ BOOL newVal);
+
+
+void __RPC_STUB IConnection_put_PendingTransaction_Stub(
+    IRpcStubBuffer *This,
+    IRpcChannelBuffer *_pRpcChannelBuffer,
+    PRPC_MESSAGE _pRpcMessage,
+    DWORD *_pdwStubPhase);
+
+
+/* [helpstring][id][propget] */ HRESULT STDMETHODCALLTYPE IConnection_get_Encrypted_Proxy( 
+    IConnection __RPC_FAR * This,
+    /* [retval][out] */ BOOL __RPC_FAR *pVal);
+
+
+void __RPC_STUB IConnection_get_Encrypted_Stub(
     IRpcStubBuffer *This,
     IRpcChannelBuffer *_pRpcChannelBuffer,
     PRPC_MESSAGE _pRpcMessage,
